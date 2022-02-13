@@ -11,6 +11,7 @@ class PokedexCreature(models.Model):
     primary_type = models.ForeignKey(PokemonType, on_delete=models.PROTECT, related_name='primary_type')
     secoundary_type = models.ForeignKey(PokemonType, on_delete=models.PROTECT, blank=True, related_name='secoundary_type')
     total = models.IntegerField()
+    health_point = models.IntegerField()
     attack = models.IntegerField()
     defense = models.IntegerField()
     sp_atk = models.IntegerField()
