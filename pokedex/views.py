@@ -1,8 +1,10 @@
-from rest_framework import viewsets, status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 
 from .models import PokedexCreature
-from .serializers import PokedexCreatureSerializer, PokedexCreatureDetailSerializer
+from .serializers import (PokedexCreatureDetailSerializer,
+                          PokedexCreatureSerializer)
+
 
 class PokedexViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = PokedexCreature.objects.all()
@@ -17,11 +19,11 @@ class PokedexViewSet(viewsets.ReadOnlyModelViewSet):
         """Filter given optionnal query parameters."""
         queryset = PokedexCreature.objects.all()
 
-        generation = self.request.query_params.get('generation')
-        legendary = self.request.query_params.get('legendary')
-        primary_type = self.request.query_params.get('primary_type')
-        secoundary_type = self.request.query_params.get('secoundary_type')
-        not_secoundary_type = self.request.query_params.get('not_secoundary_type')
+        generation = self.request.query_params.get("generation")
+        legendary = self.request.query_params.get("legendary")
+        primary_type = self.request.query_params.get("primary_type")
+        secoundary_type = self.request.query_params.get("secoundary_type")
+        not_secoundary_type = self.request.query_params.get("not_secoundary_type")
 
         if generation:
             queryset = queryset.filter(generation=generation)
