@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import PokedexCreature
+from .serializers import PokedexCreatureSerializer
+
+class PokedexViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = PokedexCreature.objects.all()
+    serializer_class = PokedexCreatureSerializer
