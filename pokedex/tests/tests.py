@@ -22,27 +22,26 @@ class MockRequest:
 
 @pytest.fixture
 def mock_request(monkeypatch):
+    """We don't want to rely on external data to test our API."""
     monkeypatch.setattr("pokedex.management.commands.fill_pokedex.requests", MockRequest)
 
-
-@pytest.mark.django_db
-def test_fill_pokedex_successfully_fill_db(mock_request):
-    url = 'https://random.url'
+@pytest.fixture
+def call_command(mock_request):
+    url = 'https://fake.url'
     management.call_command('fill_pokedex', url)
 
-    creature = PokedexCreature.objects.all()
+@pytest.fixture
+def creature():
+    return PokedexCreature.objects.all()
 
+@pytest.mark.django_db
+def test_fill_pokedex_successfully_fill_db(call_command, creature):
     assert creature.count() == 5
     assert creature.first().name == 'Bulbasaur'
     assert creature.first().primary_type == 'Grass'
 
 @pytest.mark.django_db
-def test_fill_pokedex_skip_wrong_data(mock_request):
-    url = 'https//dummy.url'
-    management.call_command('fill_pokedex', url)
-    
-    creature = PokedexCreature.objects.all()
-
+def test_fill_pokedex_skip_wrong_data(call_command, creature):
     assert creature.last().name == "VenusaurMega Venusaur"
 
 class TestQueryFilter(TestCase):
@@ -51,7 +50,7 @@ class TestQueryFilter(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_user_can_filter_pokedex_query(self):
+    def test_user_successfully_filter_pokedex_query(self):
         # All legendary from first generation
         response = self.client.get('/pokedex/?generation=1&legendary=True', format='json')
         count, results = response.json()['count'], response.json()['results']
