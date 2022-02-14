@@ -3,6 +3,7 @@ from os import environ
 from django.core import management
 from django.test import TestCase
 from pokedex.models import PokedexCreature
+from rest_framework.test import APIClient
 
 
 class MockResponse:
@@ -43,3 +44,22 @@ def test_fill_pokedex_skip_wrong_data(mock_request):
     creature = PokedexCreature.objects.all()
 
     assert creature.last().name == "Charmander"
+
+class TestQueryFilter(TestCase):
+    fixtures = ['pokedex.json']
+
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_user_can_filter_pokedex_query(self):
+        # All legendary from first generation
+        response = self.client.get('/pokedex/?generation=1&legendary=True', format='json')
+        assert len(response.json()) == 6
+        assert all(pokemon['legendary'] is True for pokemon in response.json())
+        assert all(pokemon['generation'] == 1 for pokemon in response.json())
+
+        # All legendary with no secoundary type from first generation
+        response = self.client.get('/pokedex/?generation=1&legendary=True&not_secoundary_type=True', format='json')
+
+        assert len(response.json()) == 2
+        assert all(pokemon['_secoundary_type'] is None for pokemon in response.json())
