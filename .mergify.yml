@@ -2,6 +2,7 @@ pull_request_rules:
   - name: Automatic merge
     conditions:
         - author=damien-devpy
+        - check-success=runner-job
     actions:
       merge:
         method: merge
