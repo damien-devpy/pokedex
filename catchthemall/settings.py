@@ -33,6 +33,7 @@ if environ.get("ENVIRONMENT") == "production":
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
+    STATIC_ROOT = BASE_DIR / "staticfiles"
     STATICFILES_DIR = [
         BASE_DIR / "static/",
     ]
