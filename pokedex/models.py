@@ -32,7 +32,7 @@ class PokedexCreature(models.Model):
     def get_fields(cls):
         return [
             field.name 
-            for field in cls._meta.get_fields()
+            for field in cls._meta.concrete_fields
             if field.name != 'id'
         ]
 
@@ -40,7 +40,7 @@ class PokedexCreature(models.Model):
     def get_mandatory_fields(cls):
         return [
             field.name
-            for field in cls._meta.get_fields()
+            for field in cls._meta.concrete_fields
             if field.name != 'id' and not field.null 
         ]
 
