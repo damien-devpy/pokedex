@@ -1,11 +1,17 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from .models import PokedexCreature
-from .serializers import PokedexCreatureSerializer
+from .serializers import PokedexCreatureSerializer, PokedexCreatureDetailSerializer
 
 class PokedexViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = PokedexCreature.objects.all()
     serializer_class = PokedexCreatureSerializer
+
+    def retrieve(self, request, pk=None):
+        creature = self.get_object()
+        serializer = PokedexCreatureDetailSerializer(instance=creature)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
         """Filter given optionnal query parameters."""
