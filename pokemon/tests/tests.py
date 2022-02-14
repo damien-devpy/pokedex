@@ -48,7 +48,7 @@ class TestPokemonViewSet(TestCase):
         
         pokemon_id = response.json()['id']
         data = {
-            'amount': 315,
+            'experience': 315,
         }
 
         self.client.post(f'/pokemon/{pokemon_id}/give_xp/', data, format='json')
@@ -58,7 +58,7 @@ class TestPokemonViewSet(TestCase):
         assert pokemon.experience == 15
         assert pokemon.level == 3
 
-        data['amount'] = 125
+        data['experience'] = 125
 
         self.client.post(f'/pokemon/{pokemon_id}/give_xp/', data, format='json')
 
