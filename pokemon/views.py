@@ -13,7 +13,7 @@ class PokemonViewSet(viewsets.ModelViewSet):
         pokemon = self.get_object()
         serializer = LevelUpSerializer(data=request.data)
         if serializer.is_valid():
-            pokemon.experience += serializer.validated_data['amount']
+            pokemon.experience += serializer.validated_data['experience']
             pokemon.save()
             return Response(status=status.HTTP_204_NO_CONTENT) 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -10,7 +10,7 @@ class PokemonSerializer(serializers.ModelSerializer):
 
 
 class LevelUpSerializer(serializers.Serializer):
-    amount = serializers.IntegerField()
+    experience = serializers.IntegerField()
 
 
     

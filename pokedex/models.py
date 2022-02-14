@@ -28,6 +28,7 @@ class PokedexCreature(models.Model):
     generation = models.IntegerField()
     legendary = models.BooleanField(default=False)
 
+
     @classmethod
     def get_fields(cls):
         return [
@@ -53,6 +54,7 @@ class PokedexCreature(models.Model):
         return self._secoundary_type.pokemon_type
 
     class Meta:
+        ordering = ['pokemon_id']
         constraints = [
             UniqueConstraint(
                 fields=['name'],

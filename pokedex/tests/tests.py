@@ -22,28 +22,27 @@ class MockRequest:
 
 @pytest.fixture
 def mock_request(monkeypatch):
+    """We don't want to rely on external data to test our API."""
     monkeypatch.setattr("pokedex.management.commands.fill_pokedex.requests", MockRequest)
 
-
-@pytest.mark.django_db
-def test_fill_pokedex_successfully_fill_db(mock_request):
-    url = 'https://random.url'
+@pytest.fixture
+def call_command(mock_request):
+    url = 'https://fake.url'
     management.call_command('fill_pokedex', url)
 
-    creature = PokedexCreature.objects.all()
+@pytest.fixture
+def creature():
+    return PokedexCreature.objects.all()
 
+@pytest.mark.django_db
+def test_fill_pokedex_successfully_fill_db(call_command, creature):
     assert creature.count() == 5
     assert creature.first().name == 'Bulbasaur'
     assert creature.first().primary_type == 'Grass'
 
 @pytest.mark.django_db
-def test_fill_pokedex_skip_wrong_data(mock_request):
-    url = 'https//dummy.url'
-    management.call_command('fill_pokedex', url)
-    
-    creature = PokedexCreature.objects.all()
-
-    assert creature.last().name == "Charmander"
+def test_fill_pokedex_skip_wrong_data(call_command, creature):
+    assert creature.last().name == "VenusaurMega Venusaur"
 
 class TestQueryFilter(TestCase):
     fixtures = ['pokedex.json']
@@ -51,15 +50,18 @@ class TestQueryFilter(TestCase):
     def setUp(self):
         self.client = APIClient()
 
-    def test_user_can_filter_pokedex_query(self):
+    def test_user_successfully_filter_pokedex_query(self):
         # All legendary from first generation
         response = self.client.get('/pokedex/?generation=1&legendary=True', format='json')
-        assert len(response.json()) == 6
-        assert all(pokemon['legendary'] is True for pokemon in response.json())
-        assert all(pokemon['generation'] == 1 for pokemon in response.json())
+        count, results = response.json()['count'], response.json()['results']
+        assert count == 6
+        assert all(pokemon['legendary'] is True for pokemon in results)
+        assert all(pokemon['generation'] == 1 for pokemon in results) 
 
         # All legendary with no secoundary type from first generation
         response = self.client.get('/pokedex/?generation=1&legendary=True&not_secoundary_type=True', format='json')
 
-        assert len(response.json()) == 2
-        assert all(pokemon['_secoundary_type'] is None for pokemon in response.json())
+        count, results = response.json()['count'], response.json()['results']
+
+        assert count == 2
+        assert all(pokemon['_secoundary_type'] is None for pokemon in results)
