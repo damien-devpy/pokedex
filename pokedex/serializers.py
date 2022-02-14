@@ -6,3 +6,4 @@ class PokedexCreatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = PokedexCreature
         fields = '__all__'
+        depth = 1
