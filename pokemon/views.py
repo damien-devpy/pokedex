@@ -1,14 +1,22 @@
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Pokemon
-from .serializers import LevelUpSerializer, PokemonSerializer
+from .serializers import (
+    LevelUpSerializer,
+    RetrieveOrListPokemonSerializer,
+    CreateOrUpdatePokemonSerializer,
+)
 
 
 class PokemonViewSet(viewsets.ModelViewSet):
     queryset = Pokemon.objects.all()
-    serializer_class = PokemonSerializer
+
+    def get_serializer_class(self):
+        if self.action in ("retrieve", "list"):
+            return RetrieveOrListPokemonSerializer
+        return CreateOrUpdatePokemonSerializer
 
     @action(methods=["post"], detail=True)
     def give_xp(self, request, pk=None):

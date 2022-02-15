@@ -5,7 +5,15 @@ from pokedex.serializers import PokedexCreatureSerializer
 from .models import Pokemon, Trainer
 
 
-class PokemonSerializer(serializers.ModelSerializer):
+class RetrieveOrListPokemonSerializer(serializers.ModelSerializer):
+    pokedex_creature = PokedexCreatureSerializer()
+
+    class Meta:
+        model = Pokemon
+        fields = "__all__"
+
+
+class CreateOrUpdatePokemonSerializer(serializers.ModelSerializer):
     surname = serializers.CharField(required=False)
 
     class Meta:
