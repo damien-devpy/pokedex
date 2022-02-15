@@ -82,4 +82,4 @@ class TestQueryFilter(TestCase):
         count, results = response.json()["count"], response.json()["results"]
 
         assert count == 2
-        assert all(pokemon["_secoundary_type"] is None for pokemon in results)
+        assert all(pokemon.get("secoundary_type") is None for pokemon in results)
