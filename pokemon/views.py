@@ -19,12 +19,14 @@ class PokemonViewSet(viewsets.ModelViewSet):
             return RetrieveOrListPokemonSerializer
         if self.action in ("update"):
             return UpdatePokemonSerializer
+        if self.action == "give_xp":
+            return LevelUpSerializer
         return PokemonSerializer
 
     @action(methods=["post"], detail=True)
     def give_xp(self, request, pk=None):
         pokemon = self.get_object()
-        serializer = LevelUpSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             pokemon.experience += serializer.validated_data["experience"]
             pokemon.save()
