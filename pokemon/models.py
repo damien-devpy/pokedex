@@ -19,6 +19,9 @@ class Pokemon(models.Model):
     level = models.IntegerField(default=0)
     experience = models.IntegerField(default=0)
 
+    def __str__(self):
+        return f"{self.surname} - Level {self.level} - {self.experience}/100 XP"
+
     def save(self, *args, **kwargs):
         """Overriding to make some custom changes.
         - Set default surname to PokedexCreature.name if not provided
