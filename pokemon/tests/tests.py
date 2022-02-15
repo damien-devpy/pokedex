@@ -69,3 +69,14 @@ class TestPokemonViewSet(TestCase):
 
         assert response.status_code == 400
         assert "is required" in str(response.content)
+
+    def test_user_can_update_surname_of_existing_pokemon(self):
+        response = self.client.post("/pokemon/", self.expected_data, format="json")
+        pokemon_id = response.json()["id"]
+        old_surname = response.json()["surname"]
+
+        data = {"surname": "pet"}
+        response = self.client.put(f"/pokemon/{pokemon_id}/", data, format="json")
+
+        assert response.json()["surname"] != old_surname
+        assert response.json()["surname"] == data["surname"]

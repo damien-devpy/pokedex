@@ -156,7 +156,7 @@ The Pokemon API on the other hand is a standard CRUD API.
 ### GET pokemon/
 
 ```
-curl 127.0.0.1:8000/pokemon/ | jq
+>>> curl 127.0.0.1:8000/pokemon/ | jq
 {
   "count": 0,
   "next": null,
@@ -168,15 +168,55 @@ curl 127.0.0.1:8000/pokemon/ | jq
 ### POST pokemon/
 
 ```
-curl 127.0.0.1:8000/pokemon/ -H 'Content-Type:application/json' -d '{"pokedex_creature": 42}' | jq
+>>> curl 127.0.0.1:8000/pokemon/ -H 'Content-Type:application/json' -d '{"pokedex_creature": 42}' | jq
 {
-  "id": 2,
+  "id": 1,
   "surname": "Clefable",
   "level": 0,
   "experience": 0,
   "pokedex_creature": 42,
   "trainer": null
 }
+```
+
+### GET pokemon/{id}/
+
+```
+>>> curl 127.0.0.1:8000/pokemon/1/ | jq
+{
+  "id": 1,
+  "pokedex_creature": {
+    "name": "Squirtle",
+    "total": 314,
+    "health_point": 44,
+    "legendary": false,
+    "generation": 1,
+    "_secoundary_type": null,
+    "_primary_type": {
+      "id": 6,
+      "pokemon_type": "Water"
+    }
+  },
+  "surname": "Squirtle",
+  "level": 0,
+  "experience": 0,
+  "trainer": null
+}
+```
+
+### PUT pokemon/{id}/
+
+```
+>>> curl -X PUT -H "Content-Type: application/json" -d '{"surname": "pet"}' 127.0.0.1:8000/pokemon/1/ | jq
+{
+  "id": 1,
+  "surname": "pet",
+  "level": 0,
+  "experience": 0,
+  "pokedex_creature": 42,
+  "trainer": null
+}
+```
 
 ### Tests
 

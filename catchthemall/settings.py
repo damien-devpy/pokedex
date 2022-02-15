@@ -26,19 +26,7 @@ SECRET_KEY = environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.get("DEBUG") == "True"
 
-if environ.get("ENVIRONMENT") == "production":
-    DEBUG = False
-    ALLOWED_HOSTS = ["*"]
-
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    STATIC_ROOT = BASE_DIR / "staticfiles"
-    STATICFILES_DIRS = [
-        BASE_DIR / "static/",
-    ]
-else:
-    ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -70,7 +58,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "catchthemall.urls"
@@ -155,4 +142,17 @@ AUTH_USER_MODEL = "pokemon.User"
 
 FIXTURE_DIRS = ["fixtures/"]
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+if environ.get("ENVIRONMENT") == "production":
+    DEBUG = False
+    ALLOWED_HOSTS = ["*"]
+
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    STATIC_ROOT = BASE_DIR / "staticfiles"
+    STATICFILES_DIRS = [
+        BASE_DIR / "static/",
+    ]
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    MIDDLEWARE.append("whitenoise.middleware.WhiteNoiseMiddleware")
