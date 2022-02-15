@@ -29,6 +29,14 @@ Then, you're good to go, run a local server
 
 Or you can test it live on the version deployed on [Heroku](https://pokedexdrf.herokuapp.com/)
 
+### Tests
+
+You can also run the tests if needed
+
+```
+>>> pytest
+```
+
 ## How it works
 
 They are to applications into this project, a Pokedex app and a Pokemon app.
@@ -42,7 +50,7 @@ Self explanatory, allows you to sign up and access Pokemon CRUD API
 
 ## Pokedex API
 
-### pokedex/
+### GET pokedex/
 
 ```
 >>> curl 127.0.0.1:8000/pokedex/ | jq
@@ -131,7 +139,7 @@ from the second generation that are flying
 `pokedex/` route doesn't give all the details about a creature, you can use a second route
 for that
 
-### pokedex/{id}
+### GET pokedex/{id}
 
 ```
 >>> curl 127.0.0.1:8000/pokedex/1/ | jq
@@ -242,12 +250,4 @@ or by including X-CSRFTOKEN in your request
   "pokedex_creature": 42,
   "trainer": null
 }
-```
-
-### Tests
-
-You can also run the tests if needed
-
-```
->>> pytest
 ```
