@@ -1,18 +1,28 @@
 from rest_framework import status, viewsets, generics
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 
-from .models import Pokemon
+from .models import Pokemon, User
 from .serializers import (
     LevelUpSerializer,
     RetrieveOrListPokemonSerializer,
     PokemonSerializer,
     UpdatePokemonSerializer,
+    UserSerializer,
 )
+
+
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class PokemonViewSet(viewsets.ModelViewSet):
     queryset = Pokemon.objects.all()
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.action in ("retrieve", "list"):
