@@ -151,6 +151,9 @@ for that
 
 The Pokemon API on the other hand is a standard CRUD API.
 
+🔐 : Routes with the locker expect an authenticate user. Do so through the browsable API
+or by including X-CSRFTOKEN in your request
+
 ## Pokemon API
 
 ### GET pokemon/
@@ -165,7 +168,7 @@ The Pokemon API on the other hand is a standard CRUD API.
 }
 ```
 
-### POST pokemon/
+### POST pokemon/ 🔐
 
 ```
 >>> curl 127.0.0.1:8000/pokemon/ -H 'Content-Type:application/json' -d '{"pokedex_creature": 42}' | jq
@@ -204,7 +207,7 @@ The Pokemon API on the other hand is a standard CRUD API.
 }
 ```
 
-### PUT pokemon/{id}/
+### PUT pokemon/{id}/ 🔐
 
 ```
 >>> curl -X PUT -H "Content-Type: application/json" -d '{"surname": "pet"}' 127.0.0.1:8000/pokemon/1/ | jq

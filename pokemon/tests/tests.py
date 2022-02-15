@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from pokedex.models import PokedexCreature
-from pokemon.models import Pokemon
+from pokemon.models import Pokemon, User
 
 
 class TestPokemonViewSet(TestCase):
@@ -15,7 +15,14 @@ class TestPokemonViewSet(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        user = self.create_user()
+        self.client.force_authenticate(user=user)
         self.expected_data = {"pokedex_creature": 1}
+
+    def create_user(self):
+        user = User(username="login", password="password")
+        user.save()
+        return user
 
     def test_user_can_create_a_pokemon(self):
         response = self.client.post("/pokemon/", self.expected_data, format="json")
@@ -80,3 +87,13 @@ class TestPokemonViewSet(TestCase):
 
         assert response.json()["surname"] != old_surname
         assert response.json()["surname"] == data["surname"]
+
+    def test_anonymous_user_is_read_only(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.get("/pokemon/")
+
+        assert response.status_code == 200
+
+        response = self.client.post("/pokemon/", self.expected_data, format="json")
+
+        assert response.status_code == 403
