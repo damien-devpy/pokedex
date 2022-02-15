@@ -177,6 +177,7 @@ curl 127.0.0.1:8000/pokemon/ -H 'Content-Type:application/json' -d '{"pokedex_cr
   "pokedex_creature": 42,
   "trainer": null
 }
+```
 
 ### Tests
 
