@@ -5,6 +5,9 @@ from django.db.models import UniqueConstraint
 class PokemonType(models.Model):
     pokemon_type = models.CharField(max_length=16)
 
+    def __str__(self):
+        return f"{self.pokemon_type}"
+
     class Meta:
         constraints = [
             UniqueConstraint(fields=["pokemon_type"], name="unique_pokemon_type")
@@ -29,6 +32,9 @@ class PokedexCreature(models.Model):
     speed = models.IntegerField()
     generation = models.IntegerField()
     legendary = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"#{self.pokemon_id} - {self.name}"
 
     @classmethod
     def get_fields(cls):
