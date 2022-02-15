@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "pokemon",
     # 3rd party
     "rest_framework",
-    "drf_yasg",
 ]
 
 REST_FRAMEWORK = {
