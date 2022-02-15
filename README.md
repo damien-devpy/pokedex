@@ -149,12 +149,12 @@ for that
     "pokemon_type": "Poison"
 ```
 
+## Pokemon API
+
 The Pokemon API on the other hand is a standard CRUD API.
 
 🔐 : Routes with the locker expect an authenticate user. Do so through the browsable API
 or by including X-CSRFTOKEN in your request
-
-## Pokemon API
 
 ### GET pokemon/
 
@@ -216,6 +216,21 @@ or by including X-CSRFTOKEN in your request
   "surname": "pet",
   "level": 0,
   "experience": 0,
+  "pokedex_creature": 42,
+  "trainer": null
+}
+```
+
+### POST /pokemon/{id}/give_xp/ 🔐
+
+```
+>>> curl -X POST -H "Content-Type: application/json" -d '{"experience": 125}' 127.0.0.1/pokemon/1/ | jq
+>>> curl 127.0.0.1:8000/pokemon/1/ | jq
+{
+  "id": 1,
+  "surname": "pet",
+  "level": 1,
+  "experience": 25,
   "pokedex_creature": 42,
   "trainer": null
 }
