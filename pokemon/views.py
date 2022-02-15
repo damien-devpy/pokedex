@@ -6,7 +6,8 @@ from .models import Pokemon
 from .serializers import (
     LevelUpSerializer,
     RetrieveOrListPokemonSerializer,
-    CreateOrUpdatePokemonSerializer,
+    PokemonSerializer,
+    UpdatePokemonSerializer,
 )
 
 
@@ -16,7 +17,9 @@ class PokemonViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in ("retrieve", "list"):
             return RetrieveOrListPokemonSerializer
-        return CreateOrUpdatePokemonSerializer
+        if self.action in ("update"):
+            return UpdatePokemonSerializer
+        return PokemonSerializer
 
     @action(methods=["post"], detail=True)
     def give_xp(self, request, pk=None):
