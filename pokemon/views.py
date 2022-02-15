@@ -25,12 +25,13 @@ class PokemonViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
-        if self.action in ("retrieve", "list"):
-            return RetrieveOrListPokemonSerializer
-        if self.action in ("update"):
-            return UpdatePokemonSerializer
-        if self.action == "give_xp":
-            return LevelUpSerializer
+        match self.action:
+            case "retrieve" | "list":
+                return RetrieveOrListPokemonSerializer
+            case "update":
+                return UpdatePokemonSerializer
+            case "give_xp":
+                return LevelUpSerializer
         return PokemonSerializer
 
     @action(methods=["post"], detail=True)
