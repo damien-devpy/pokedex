@@ -4,6 +4,8 @@ Catch Them All !
 
 [ER diagram](https://drive.google.com/file/d/1pwEx8WcwaotmdP_JcI5bnyQhjb0eyfvj/view?usp=sharing)
 
+[Swagger](https://pokedexdrf.herokuapp.com/api/schema/swagger-ui/)
+
 ## How to play with it
 
 You can use it locally, first fork/clone the repo
@@ -25,12 +27,18 @@ Then, you're good to go, run a local server
 >>> python manage.py runserver
 ```
 
+Or you can test it live on the version deployed on [Heroku](https://pokedexdrf.herokuapp.com/)
+
 ## How it works
 
 They are to applications into this project, a Pokedex app and a Pokemon app.
 Each of this has his own API.
 
 The Pokedex API is a read only API.
+
+## sign-up/
+
+Self explanatory, allows you to sign up and access Pokemon CRUD API
 
 ## Pokedex API
 
